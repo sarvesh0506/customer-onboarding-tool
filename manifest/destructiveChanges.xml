@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Onboarding_Task__c.Task_type__c</members>
+        <members>Onboarding_Task__c.Priority__c</members>
+        <members>Onboarding_Task__c.Completion_Date__c</members>
+        <members>Onboarding_Task__c.Notes__c</members>
+        <members>Onboarding_Task__c.Customer_New__c</members>
+        <name>CustomField</name>
+    </types>
+    <version>60.0</version>
+</Package>

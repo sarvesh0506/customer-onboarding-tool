@@ -1,0 +1,44 @@
+.app-container {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* Premium App Header */
+.app-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
+
+.logo-icon {
+    --slds-c-icon-color-background: #4f46e5;
+    --slds-c-icon-color-foreground: #ffffff;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.app-subtitle {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.refresh-btn {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Layout adjustments */
+.workspace-area {
+    display: flex;
+    flex-direction: column;
+}

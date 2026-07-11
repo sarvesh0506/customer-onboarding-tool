@@ -1,0 +1,206 @@
+/* Card styling */
+.details-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.premium-btn {
+    --slds-c-button-brand-color-background: #4f46e5;
+    --slds-c-button-brand-color-background-hover: #4338ca;
+    --slds-c-button-brand-color-border: #4f46e5;
+    --slds-c-button-brand-color-border-hover: #4338ca;
+}
+
+/* Custom visual progress tracker path */
+.progress-tracker {
+    width: 100%;
+    padding: 16px 0;
+    overflow-x: auto;
+}
+
+.tracker-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    min-width: 500px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-marker {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #64748b;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-align: center;
+    max-width: 100px;
+    transition: all 0.3s ease;
+}
+
+.step-connector {
+    position: absolute;
+    top: 16px;
+    left: calc(50% + 16px);
+    right: calc(-50% + 16px);
+    height: 3px;
+    background-color: #cbd5e1;
+    z-index: 1;
+    transition: background-color 0.3s ease;
+}
+
+/* Step States */
+.step-completed .step-marker {
+    background-color: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+.step-completed .step-label {
+    color: #10b981;
+}
+
+.step-completed .step-connector {
+    background-color: #10b981;
+}
+
+.step-current .step-marker {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+.step-current .step-label {
+    color: #3b82f6;
+    font-weight: 700;
+}
+
+.step-future .step-marker {
+    background-color: #ffffff;
+    border-color: #cbd5e1;
+}
+
+.check-icon {
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+/* Fields layout */
+.field-grid {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #f3f4f6;
+    padding: 16px;
+}
+
+.field-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+}
+
+.field-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.field-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Task Completion Tracker Box */
+.task-summary-box {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+}
+
+.task-summary-title {
+    font-weight: 700;
+    color: #166534;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.task-summary-subtitle {
+    font-size: 0.85rem;
+    color: #15803d;
+}
+
+.task-percent-circle {
+    background-color: #166534;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(22, 101, 52, 0.2);
+}
+
+.percent-text {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* Card Placeholder */
+.card-placeholder {
+    background-color: #ffffff;
+    border: 2px dashed #e5e7eb;
+    border-radius: 12px;
+    min-height: 400px;
+}
+
+.text-muted {
+    color: #6b7280;
+}
+
+/* Bonus File Uploader */
+.file-upload-box {
+    background-color: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.file-upload-box:hover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.file-upload-title {
+    font-weight: 700;
+    color: #334155;
+    font-size: 0.95rem;
+}

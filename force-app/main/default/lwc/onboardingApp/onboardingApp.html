@@ -1,0 +1,55 @@
+<template>
+    <div class="app-container slds-p-around_medium">
+        <!-- Application Header -->
+        <div class="slds-m-bottom_medium app-header slds-p-around_medium">
+            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <div class="app-logo slds-m-right_small">
+                        <lightning-icon icon-name="custom:custom18" size="medium" class="logo-icon"></lightning-icon>
+                    </div>
+                    <div>
+                        <h1 class="app-title">Customer Onboarding Portal</h1>
+                        <p class="app-subtitle">Track implementation, tasks, and key milestones</p>
+                    </div>
+                </div>
+                <div>
+                    <lightning-button-icon icon-name="utility:refresh" onclick={handleGlobalRefresh} alternative-text="Refresh Portal" variant="border-filled" class="refresh-btn"></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <c-onboarding-dashboard class="dashboard-comp"></c-onboarding-dashboard>
+
+        <!-- Two Column Workspace Layout -->
+        <div class="slds-grid slds-wrap slds-gutters_direct-medium slds-m-top_medium">
+            <!-- Sidebar: Customer Listing (4/12 width) -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-m-bottom_medium">
+                <c-customer-list
+                    selected-customer-id={selectedCustomerId}
+                    oncustomerselect={handleCustomerSelect}
+                    class="list-comp"
+                ></c-customer-list>
+            </div>
+
+            <!-- Workspace: Customer Details & Tasks (8/12 width) -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-m-bottom_medium">
+                <div class="workspace-area">
+                    <!-- Customer Details Card -->
+                    <c-customer-details
+                        customer-id={selectedCustomerId}
+                        onstatuschange={handleStatusChange}
+                        class="details-comp slds-block slds-m-bottom_medium"
+                    ></c-customer-details>
+
+                    <!-- Tasks List Card -->
+                    <c-task-management
+                        customer-id={selectedCustomerId}
+                        ontaskchange={handleTaskChange}
+                        class="tasks-comp slds-block"
+                    ></c-task-management>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

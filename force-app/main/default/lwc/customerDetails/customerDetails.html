@@ -1,0 +1,178 @@
+<template>
+    <template if:true={customer}>
+        <lightning-card title="Customer Details & Progress" icon-name="standard:record" class="details-card">
+            <!-- Action Buttons -->
+            <div slot="actions">
+                <lightning-button
+                    label="Update Stage"
+                    icon-name="utility:change_owner"
+                    variant="brand"
+                    onclick={openModal}
+                    class="premium-btn"
+                ></lightning-button>
+            </div>
+
+            <div class="slds-p-around_medium">
+                <!-- Visual Step Progress Tracker -->
+                <div class="progress-tracker slds-m-bottom_large">
+                    <div class="tracker-steps">
+                        <template for:each={steps} for:item="step">
+                            <div key={step.name} class={step.stepClass}>
+                                <div class="step-marker">
+                                    <template if:true={step.isCompleted}>
+                                        <lightning-icon icon-name="utility:check" size="xx-small" variant="inverse" class="check-icon"></lightning-icon>
+                                    </template>
+                                    <template if:false={step.isCompleted}>
+                                        {step.index}
+                                    </template>
+                                </div>
+                                <span class="step-label">{step.name}</span>
+                                <template if:false={step.isLast}>
+                                    <div class="step-connector"></div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Customer Fields Grid -->
+                <div class="slds-grid slds-wrap slds-gutters_direct-medium slds-m-bottom_large field-grid">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Customer Name</span>
+                            <span class="field-value">{customer.Name}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Company</span>
+                            <span class="field-value">{customer.Company__c}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Email</span>
+                            <span class="field-value">{customer.Email__c}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Phone</span>
+                            <span class="field-value">{customer.Phone__c}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Industry</span>
+                            <span class="field-value">{customer.Industry__c}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Customer Type</span>
+                            <span class="field-value">{customer.Customer_Type__c}</span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Go-Live Date</span>
+                            <span class="field-value">
+                                <lightning-formatted-date-time value={customer.Go_Live_Date__c} year="numeric" month="short" day="2-digit" time-zone="UTC"></lightning-formatted-date-time>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-vertical_xx-small">
+                        <div class="field-item">
+                            <span class="field-label">Account Owner</span>
+                            <span class="field-value">{ownerName}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus File Uploader: Only visible during Documentation Pending -->
+                <template if:true={isDocumentationPending}>
+                    <div class="slds-m-bottom_large file-upload-box slds-p-around_medium">
+                        <h3 class="file-upload-title slds-m-bottom_small">
+                            <lightning-icon icon-name="utility:upload" size="x-small" class="meta-icon slds-m-right_xx-small"></lightning-icon>
+                            Onboarding Documentation Upload
+                        </h3>
+                        <lightning-file-upload
+                            label="Upload files (contracts, requirements, setup sheets, etc.)"
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            record-id={customer.Id}
+                            onuploadfinished={handleUploadFinished}
+                            multiple
+                        ></lightning-file-upload>
+                    </div>
+                </template>
+
+                <!-- Custom Section for Task Count & Completion Tracker -->
+                <div class="task-summary-box slds-p-around_medium slds-m-bottom_large">
+                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                        <div>
+                            <h3 class="task-summary-title">Onboarding Tasks Completed</h3>
+                            <span class="task-summary-subtitle">{customer.Completed_Tasks__c} of {customer.Total_Tasks__c} tasks finished</span>
+                        </div>
+                        <div class="task-percent-circle">
+                            <span class="percent-text">{completionPercentage}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+
+    <template if:false={customer}>
+        <div class="slds-align_absolute-center slds-p-around_xx-large card-placeholder">
+            <div class="slds-text-align_center">
+                <lightning-icon icon-name="utility:user" size="large" variant="light"></lightning-icon>
+                <div class="slds-m-top_medium text-muted">Select a customer from the list to view details and progress.</div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Update Stage Modal -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Update Onboarding Stage</h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-form">
+                        <lightning-combobox
+                            name="newStage"
+                            label="New Stage"
+                            value={newStage}
+                            options={stageOptions}
+                            onchange={handleNewStageChange}
+                            required
+                        ></lightning-combobox>
+                        
+                        <lightning-textarea
+                            name="notes"
+                            label="Reason / Progression Notes"
+                            value={notes}
+                            placeholder="Describe current status, blockages, or what was completed in this stage..."
+                            onchange={handleNotesChange}
+                            rows="4"
+                            class="slds-m-top_small"
+                        ></lightning-textarea>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Save Changes" variant="brand" onclick={handleSaveStage} disabled={isSaveDisabled}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

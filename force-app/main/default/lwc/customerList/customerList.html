@@ -1,0 +1,65 @@
+<template>
+    <lightning-card title="Customers" icon-name="standard:customers" class="list-card">
+        <!-- Search and Filter Panel -->
+        <div class="slds-p-horizontal_medium slds-p-bottom_small border-bottom">
+            <div class="slds-grid slds-wrap slds-gutters_direct-xx-small">
+                <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+                    <lightning-input
+                        name="enter-search"
+                        label="Search Customers"
+                        type="search"
+                        placeholder="Search Name, Company, Email..."
+                        value={searchTerm}
+                        onchange={handleSearchChange}
+                        variant="label-hidden"
+                    ></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning-combobox
+                        name="stageFilter"
+                        label="Filter by Stage"
+                        value={selectedStage}
+                        placeholder="All Stages"
+                        options={stageOptions}
+                        onchange={handleStageChange}
+                        variant="label-hidden"
+                    ></lightning-combobox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer List Container -->
+        <div class="list-container">
+            <template if:true={customers.length}>
+                <div class="list-items">
+                    <template for:each={customers} for:item="cust">
+                        <div
+                            key={cust.Id}
+                            class={cust.rowClass}
+                            onclick={handleCustomerClick}
+                            data-id={cust.Id}
+                        >
+                            <div class="slds-grid slds-grid_vertical-align-center">
+                                <div class="avatar-wrapper slds-m-right_small">
+                                    <span class="avatar-text">{cust.initials}</span>
+                                </div>
+                                <div class="slds-col">
+                                    <div class="customer-name slds-truncate">{cust.Name}</div>
+                                    <div class="customer-sub slds-grid slds-grid_align-spread">
+                                        <span class="company-text slds-truncate">{cust.Company__c}</span>
+                                        <span class={cust.badgeClass}>{cust.Onboarding_Status__c}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={customers.length}>
+                <div class="slds-align_absolute-center slds-p-around_large text-muted text-center">
+                    No customers found.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

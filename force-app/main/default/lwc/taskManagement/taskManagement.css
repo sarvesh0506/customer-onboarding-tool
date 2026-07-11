@@ -1,0 +1,122 @@
+/* Card container */
+.tasks-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.tasks-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Individual Task Row */
+.task-row {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.task-row:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Task Row States */
+.task-normal-row {
+    background-color: #ffffff;
+    border-left: 4px solid #94a3b8;
+}
+
+.task-completed-row {
+    background-color: #f9fafb;
+    border-left: 4px solid #10b981;
+    opacity: 0.8;
+}
+
+.task-completed-row .task-title {
+    text-decoration: line-through;
+    color: #6b7280;
+}
+
+.task-overdue-row {
+    background-color: #fef2f2;
+    border-color: #fee2e2;
+    border-left: 4px solid #ef4444;
+}
+
+.task-overdue-row .task-title {
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+/* Task info */
+.task-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.late-badge {
+    background-color: #ef4444;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    animation: pulse 2s infinite;
+}
+
+.task-metadata {
+    font-size: 0.75rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+}
+
+.meta-icon {
+    --slds-c-icon-color-foreground: #9ca3af;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* Description box */
+.task-desc-box {
+    background-color: #f9fafb;
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid #f3f4f6;
+    width: 100%;
+}
+
+.task-overdue-row .task-desc-box {
+    background-color: #fff5f5;
+    border-color: #fed7d7;
+}
+
+.description-text {
+    font-size: 0.8rem;
+    color: #4b5563;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Keyframes pulse animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+.empty-tasks {
+    color: #6b7280;
+    font-style: italic;
+}

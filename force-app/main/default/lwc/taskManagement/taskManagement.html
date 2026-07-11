@@ -1,0 +1,138 @@
+<template>
+    <template if:true={customerId}>
+        <lightning-card title="Tasks Management" icon-name="utility:task" class="tasks-card">
+            <!-- Action Buttons -->
+            <div slot="actions">
+                <lightning-button
+                    label="Add Task"
+                    icon-name="utility:add"
+                    variant="neutral"
+                    onclick={openModal}
+                    class="premium-btn"
+                ></lightning-button>
+            </div>
+
+            <div class="slds-p-around_medium">
+                <!-- Task List Scrollable Container -->
+                <div class="tasks-list-container">
+                    <template if:true={tasks.length}>
+                        <div class="tasks-items">
+                            <template for:each={tasks} for:item="tsk">
+                                <div key={tsk.Id} class={tsk.rowClass}>
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                                        <!-- Inline Completion Checkbox -->
+                                        <div class="slds-col slds-grow-none slds-m-right_small">
+                                            <lightning-input
+                                                type="checkbox"
+                                                checked={tsk.isCompleted}
+                                                onchange={handleStatusToggle}
+                                                data-id={tsk.Id}
+                                                variant="label-hidden"
+                                                label="Mark Complete"
+                                            ></lightning-input>
+                                        </div>
+
+                                        <!-- Task Header Info -->
+                                        <div class="slds-col slds-has-flexi-truncate">
+                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                <span class="task-title slds-truncate slds-m-right_small">{tsk.Name}</span>
+                                                <template if:true={tsk.isOverdue}>
+                                                    <span class="late-badge">OVERDUE</span>
+                                                </template>
+                                            </div>
+                                            <div class="task-metadata slds-m-top_xx-small">
+                                                <span class="due-date-text slds-m-right_medium">
+                                                    <lightning-icon icon-name="utility:event" size="xx-small" class="meta-icon"></lightning-icon>
+                                                    Due: <lightning-formatted-date-time value={tsk.Due_Date__c} year="numeric" month="short" day="2-digit" time-zone="UTC"></lightning-formatted-date-time>
+                                                </span>
+                                                <span class="assigned-user-text">
+                                                    <lightning-icon icon-name="utility:user" size="xx-small" class="meta-icon"></lightning-icon>
+                                                    Assigned: {tsk.assignedName}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Description Expandable / Collapsed -->
+                                        <template if:true={tsk.Description__c}>
+                                            <div class="slds-col slds-size_1-of-1 slds-m-top_small task-desc-box">
+                                                <p class="description-text">{tsk.Description__c}</p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={tasks.length}>
+                        <div class="slds-align_absolute-center slds-p-around_large text-muted text-center empty-tasks">
+                            No tasks found for this customer.
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+
+    <!-- Create Task Modal -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
+                    <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Create Onboarding Task</h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <div class="slds-form">
+                        <lightning-input
+                            name="taskName"
+                            label="Task Name"
+                            value={newTaskName}
+                            onchange={handleFieldChange}
+                            required
+                        ></lightning-input>
+                        
+                        <lightning-input
+                            name="dueDate"
+                            label="Due Date"
+                            type="date"
+                            value={newDueDate}
+                            onchange={handleFieldChange}
+                            required
+                            class="slds-m-top_small"
+                        ></lightning-input>
+
+                        <lightning-combobox
+                            name="status"
+                            label="Status"
+                            value={newStatus}
+                            options={statusOptions}
+                            onchange={handleFieldChange}
+                            required
+                            class="slds-m-top_small"
+                        ></lightning-combobox>
+                        
+                        <lightning-textarea
+                            name="description"
+                            label="Description"
+                            value={newDescription}
+                            placeholder="Detail instructions or checklist..."
+                            onchange={handleFieldChange}
+                            rows="3"
+                            class="slds-m-top_small"
+                        ></lightning-textarea>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Save Task" variant="brand" onclick={handleSaveTask} disabled={isSaveDisabled}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

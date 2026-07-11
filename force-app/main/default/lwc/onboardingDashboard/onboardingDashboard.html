@@ -1,0 +1,68 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_large">
+        <!-- KPI Card: Total Customers -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+            <div class="kpi-card total-card slds-p-around_medium">
+                <div class="kpi-icon-wrapper">
+                    <lightning-icon icon-name="standard:customers" alternative-text="Total Customers" size="medium" variant="inverse"></lightning-icon>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Total Customers</span>
+                    <span class="kpi-value">{totalCustomers}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Card: Overdue Tasks -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+            <div class="kpi-card overdue-card slds-p-around_medium">
+                <div class="kpi-icon-wrapper">
+                    <lightning-icon icon-name="utility:clock" alternative-text="Overdue Tasks" size="medium" variant="inverse"></lightning-icon>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Overdue Tasks</span>
+                    <span class="kpi-value">{overdueTasks}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Card: Ready for Go-Live -->
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+            <div class="kpi-card go-live-card slds-p-around_medium">
+                <div class="kpi-icon-wrapper">
+                    <lightning-icon icon-name="standard:activations" alternative-text="Ready for Go-Live" size="medium" variant="inverse"></lightning-icon>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Ready for Go-Live</span>
+                    <span class="kpi-value">{readyForGoLive}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart / Stage Breakdown Card -->
+    <lightning-card title="Customers by Onboarding Stage" icon-name="utility:chart" class="dashboard-chart-card">
+        <div class="slds-p-around_medium">
+            <template if:true={stageData.length}>
+                <div class="stage-list">
+                    <template for:each={stageData} for:item="stage">
+                        <div key={stage.name} class="stage-row slds-m-bottom_medium">
+                            <div class="stage-info slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                                <span class="stage-name">{stage.name}</span>
+                                <span class="stage-count-badge">{stage.count} ({stage.percentage}%)</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style={stage.barStyle}></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={stageData.length}>
+                <div class="slds-align_absolute-center slds-p-around_large text-muted">
+                    No stage data available.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
