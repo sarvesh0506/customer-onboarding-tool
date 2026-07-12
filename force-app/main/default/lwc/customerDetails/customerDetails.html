@@ -2,7 +2,14 @@
     <template if:true={customer}>
         <lightning-card title="Customer Details & Progress" icon-name="standard:record" class="details-card">
             <!-- Action Buttons -->
-            <div slot="actions">
+            <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button
+                    label="Edit Details"
+                    icon-name="utility:edit"
+                    variant="neutral"
+                    onclick={openEditModal}
+                    class="slds-m-right_x-small"
+                ></lightning-button>
                 <lightning-button
                     label="Update Stage"
                     icon-name="utility:change_owner"
@@ -171,6 +178,57 @@
                     <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
                     <lightning-button label="Save Changes" variant="brand" onclick={handleSaveStage} disabled={isSaveDisabled}></lightning-button>
                 </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!-- Edit Customer Details Modal -->
+    <template if:true={isEditModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-04" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeEditModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
+                    <h2 id="modal-heading-04" class="slds-modal__title slds-hyphenate">Edit Customer Details</h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                    <lightning-record-edit-form
+                        record-id={customer.Id}
+                        object-api-name="Customer__c"
+                        onsuccess={handleEditSuccess}
+                    >
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Name" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Company__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Email__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Phone__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Industry__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Customer_Type__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                <lightning-input-field field-name="Go_Live_Date__c" required></lightning-input-field>
+                            </div>
+                        </div>
+                        <div class="slds-m-top_medium slds-align_absolute-center">
+                            <lightning-button class="slds-m-right_small" label="Cancel" onclick={closeEditModal}></lightning-button>
+                            <lightning-button type="submit" variant="brand" label="Save Details" class="premium-btn"></lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>

@@ -1,5 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import listCustomers from '@salesforce/apex/CustomerController.listCustomers';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CustomerList extends LightningElement {
     @api selectedCustomerId;
@@ -7,6 +8,7 @@ export default class CustomerList extends LightningElement {
     @track customers = [];
     @track searchTerm = '';
     @track selectedStage = '';
+    @track isCreateModalOpen = false;
 
     delayTimeout;
 
@@ -98,5 +100,32 @@ export default class CustomerList extends LightningElement {
         this.dispatchEvent(new CustomEvent('customerselect', {
             detail: { customerId }
         }));
+    }
+
+    openCreateModal() {
+        this.isCreateModalOpen = true;
+    }
+
+    closeCreateModal() {
+        this.isCreateModalOpen = false;
+    }
+
+    handleCreateSuccess(event) {
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Success',
+            message: 'Customer created successfully',
+            variant: 'success'
+        }));
+        
+        this.isCreateModalOpen = false;
+        
+        // Notify parent to refresh dashboard numbers
+        this.dispatchEvent(new CustomEvent('customercreate'));
+        
+        const newCustomerId = event.detail.id;
+        this.selectedCustomerId = newCustomerId;
+        this.fetchCustomers().then(() => {
+            this.selectCustomer(newCustomerId);
+        });
     }
 }

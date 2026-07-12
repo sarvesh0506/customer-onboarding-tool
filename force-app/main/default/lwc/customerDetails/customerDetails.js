@@ -8,6 +8,7 @@ export default class CustomerDetails extends LightningElement {
 
     @track customer;
     @track isModalOpen = false;
+    @track isEditModalOpen = false;
     @track newStage = '';
     @track notes = '';
 
@@ -127,6 +128,29 @@ export default class CustomerDetails extends LightningElement {
 
     closeModal() {
         this.isModalOpen = false;
+    }
+
+    openEditModal() {
+        this.isEditModalOpen = true;
+    }
+
+    closeEditModal() {
+        this.isEditModalOpen = false;
+    }
+
+    handleEditSuccess() {
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Success',
+            message: 'Customer details updated successfully',
+            variant: 'success'
+        }));
+        this.isEditModalOpen = false;
+        
+        // Notify parent to refresh sidebar list/dashboard
+        this.dispatchEvent(new CustomEvent('statuschange'));
+        
+        // Refresh local details
+        this.fetchCustomerDetails();
     }
 
     handleNewStageChange(event) {
