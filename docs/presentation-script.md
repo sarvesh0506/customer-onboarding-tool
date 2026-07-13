@@ -50,9 +50,13 @@ Use this script to guide your screen-recording and voiceover for your final proj
     >
     > We can check off tasks inline. Toggling a task updates the database and dynamically updates our onboarding progress percentage. We can also click **Add Task** to create new checklists inline with validation controls."
 
-*   **Visual**: Click the **Update Stage** button on details. Advance the stage, enter a note (e.g., *'Ready for final testing'*), and click **Save Changes**.
+*   **Visual**: Click the **Update Stage** button on details. Select a customer that has open tasks (e.g., *Initech Solutions*), choose **Go Live** or **Completed**, and click **Save Changes**. Show the red validation toast: *"Error Saving Changes: Still tasks are yet to complete..."*.
 *   **Voiceover**:
-    > "To advance stages, users click **Update Stage**, choose the next milestone, and enter audit notes. This logs a permanent history entry in the database and triggers email alerts to the account owner."
+    > "To enforce data quality, we built a custom business validation rule. If a user attempts to transition a customer to 'Go Live' or 'Completed' while they still have pending or overdue tasks, the backend blocks the update and displays a red alert toast, prompting the coordinator to clear the checklists first."
+
+*   **Visual**: Check off the remaining open tasks for that customer in the checklist so it reaches 100% completion. Open **Update Stage** again, select **Go Live**, enter a note, and save. The path updates to green/blue successfully.
+*   **Voiceover**:
+    > "Once all tasks are marked as completed, the validator passes. We can now successfully transition the customer to Go Live or Completed, which logs a permanent history entry in the database and triggers email alerts to the account owner."
 
 ---
 
@@ -64,11 +68,11 @@ Use this script to guide your screen-recording and voiceover for your final proj
     >
     > This design ensures that if a customer is deleted, all their related checklists and audit history are automatically deleted to maintain data integrity."
 
-*   **Visual**: Open [CustomerService.cls](file:///force-app/main/default/classes/CustomerService.cls). Point out the `updateOnboardingStatus` method.
+*   **Visual**: Open [CustomerService.cls](file:///force-app/main/default/classes/CustomerService.cls). Point out the `updateOnboardingStatus` method and the stage validation check query.
 *   **Voiceover**:
     > "I've structured the backend using a strict multi-tier architecture. Business logic resides in `*Service` classes like `CustomerService` and `TaskService`. 
     > 
-    > To pass Salesforce security standards, all SOQL queries use the `WITH SECURITY_ENFORCED` clause, and DML operations utilize `Security.stripInaccessible` to enforce Field-Level Security and CRUD checks."
+    > In `CustomerService.updateOnboardingStatus`, we check for incomplete tasks using a fast aggregate query. To pass Salesforce security standards, all SOQL queries use the `WITH SECURITY_ENFORCED` clause, and DML operations utilize `Security.stripInaccessible` to enforce Field-Level Security and CRUD checks."
 
 *   **Visual**: Open [OnboardingTriggerHandler.cls](file:///force-app/main/default/classes/OnboardingTriggerHandler.cls). Show the email bulkification logic.
 *   **Voiceover**:
@@ -88,7 +92,7 @@ Use this script to guide your screen-recording and voiceover for your final proj
 
 *   **Visual**: Show the terminal output in VS Code where the tests ran successfully. Point to the **100% Pass** and **87% Coverage** lines.
 *   **Voiceover**:
-    > "To verify correctness, I wrote a test suite of 33 unit tests checking all services, controllers, triggers, and REST resources. 
+    > "To verify correctness, I wrote a test suite of 37 unit tests checking all services, controllers, triggers, and REST resources. 
     > 
     > The tests compile and execute under standard-user security contexts, achieving a **100% pass rate** and **87% org-wide code coverage**, exceeding the 85% project target."
 
