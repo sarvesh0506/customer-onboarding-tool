@@ -136,4 +136,56 @@ private class CustomerServiceTest {
             Assert.areEqual('Moving to implementation phase', notes[0].Note__c);
         }
     }
+    
+    @IsTest
+    static void testUpdateOnboardingStatusCompletedSuccess() {
+        User u = TestUtility.createTestUser();
+        System.runAs(u) {
+            Customer__c cust = new Customer__c(Name = 'Test Customer', Onboarding_Status__c = 'UAT');
+            insert cust;
+            
+            // Create a completed task
+            Onboarding_Task__c task = new Onboarding_Task__c(
+                Name = 'Completed Task',
+                Customer__c = cust.Id,
+                Status__c = 'Completed',
+                Due_Date__c = Date.today()
+            );
+            insert task;
+            
+            Test.startTest();
+            CustomerService.updateOnboardingStatus(cust.Id, 'Completed', 'onboarding finished');
+            Test.stopTest();
+            
+            Customer__c updated = [SELECT Onboarding_Status__c FROM Customer__c WHERE Id = :cust.Id];
+            Assert.areEqual('Completed', updated.Onboarding_Status__c);
+        }
+    }
+    
+    @IsTest
+    static void testUpdateOnboardingStatusCompletedFailure() {
+        User u = TestUtility.createTestUser();
+        System.runAs(u) {
+            Customer__c cust = new Customer__c(Name = 'Test Customer', Onboarding_Status__c = 'UAT');
+            insert cust;
+            
+            // Create an incomplete task
+            Onboarding_Task__c task = new Onboarding_Task__c(
+                Name = 'Pending Task',
+                Customer__c = cust.Id,
+                Status__c = 'Pending',
+                Due_Date__c = Date.today()
+            );
+            insert task;
+            
+            try {
+                Test.startTest();
+                CustomerService.updateOnboardingStatus(cust.Id, 'Completed', 'onboarding finished');
+                Test.stopTest();
+                Assert.fail('Should fail due to incomplete tasks');
+            } catch (IllegalArgumentException e) {
+                Assert.isTrue(e.getMessage().contains('Still tasks are yet to complete'), 'Expected tasks yet to complete validation message');
+            }
+        }
+    }
 }

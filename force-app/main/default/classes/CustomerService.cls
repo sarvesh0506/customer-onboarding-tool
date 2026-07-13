@@ -91,6 +91,19 @@ public with sharing class CustomerService {
             throw new IllegalArgumentException('Customer ID and new status are required');
         }
         
+        if (newStatus == 'Completed') {
+            Integer incompleteTasks = [
+                SELECT count() 
+                FROM Onboarding_Task__c 
+                WHERE Customer__c = :customerId 
+                AND Status__c != 'Completed'
+                WITH SECURITY_ENFORCED
+            ];
+            if (incompleteTasks > 0) {
+                throw new IllegalArgumentException('Still tasks are yet to complete. You can update to Completed after completing all tasks.');
+            }
+        }
+        
         Customer__c customer = getCustomer(customerId);
         customer.Onboarding_Status__c = newStatus;
         
