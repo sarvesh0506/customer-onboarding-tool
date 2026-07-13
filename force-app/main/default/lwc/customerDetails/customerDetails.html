@@ -127,6 +127,102 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Update Stage Modal -->
+            <template if:true={isModalOpen}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+                    <div class="slds-modal__container">
+                        <!-- Modal Header -->
+                        <header class="slds-modal__header">
+                            <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
+                            <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Update Onboarding Stage</h2>
+                        </header>
+
+                        <!-- Modal Body -->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="slds-form">
+                                <lightning-combobox
+                                    name="newStage"
+                                    label="New Stage"
+                                    value={newStage}
+                                    options={stageOptions}
+                                    onchange={handleNewStageChange}
+                                    required
+                                ></lightning-combobox>
+                                
+                                <lightning-textarea
+                                    name="notes"
+                                    label="Reason / Progression Notes"
+                                    value={notes}
+                                    placeholder="Describe current status, blockages, or what was completed in this stage..."
+                                    onchange={handleNotesChange}
+                                    rows="4"
+                                    class="slds-m-top_small"
+                                ></lightning-textarea>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
+                            <lightning-button label="Save Changes" variant="brand" onclick={handleSaveStage} disabled={isSaveDisabled}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+            </template>
+
+            <!-- Edit Customer Details Modal -->
+            <template if:true={isEditModalOpen}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-04" class="slds-modal slds-fade-in-open slds-modal_small">
+                    <div class="slds-modal__container">
+                        <!-- Modal Header -->
+                        <header class="slds-modal__header">
+                            <lightning-button-icon icon-name="utility:close" onclick={closeEditModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
+                            <h2 id="modal-heading-04" class="slds-modal__title slds-hyphenate">Edit Customer Details</h2>
+                        </header>
+
+                        <!-- Modal Body -->
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                            <lightning-record-edit-form
+                                record-id={customer.Id}
+                                object-api-name="Customer__c"
+                                onsuccess={handleEditSuccess}
+                            >
+                                <lightning-messages></lightning-messages>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Name" required></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Company__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Email__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Phone__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Industry__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Customer_Type__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
+                                        <lightning-input-field field-name="Go_Live_Date__c" required></lightning-input-field>
+                                    </div>
+                                </div>
+                                <div class="slds-m-top_medium slds-align_absolute-center">
+                                    <lightning-button class="slds-m-right_small" label="Cancel" onclick={closeEditModal}></lightning-button>
+                                    <lightning-button type="submit" variant="brand" label="Save Details" class="premium-btn"></lightning-button>
+                                </div>
+                            </lightning-record-edit-form>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+            </template>
         </lightning-card>
     </template>
 
@@ -137,100 +233,5 @@
                 <div class="slds-m-top_medium text-muted">Select a customer from the list to view details and progress.</div>
             </div>
         </div>
-    </template>
-
-    <!-- Update Stage Modal -->
-    <template if:true={isModalOpen}>
-        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
-            <div class="slds-modal__container">
-                <!-- Modal Header -->
-                <header class="slds-modal__header">
-                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
-                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Update Onboarding Stage</h2>
-                </header>
-
-                <!-- Modal Body -->
-                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <div class="slds-form">
-                        <lightning-combobox
-                            name="newStage"
-                            label="New Stage"
-                            value={newStage}
-                            options={stageOptions}
-                            onchange={handleNewStageChange}
-                            required
-                        ></lightning-combobox>
-                        
-                        <lightning-textarea
-                            name="notes"
-                            label="Reason / Progression Notes"
-                            value={notes}
-                            placeholder="Describe current status, blockages, or what was completed in this stage..."
-                            onchange={handleNotesChange}
-                            rows="4"
-                            class="slds-m-top_small"
-                        ></lightning-textarea>
-                    </div>
-                </div>
-
-                <!-- Modal Footer -->
-                <footer class="slds-modal__footer">
-                    <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
-                    <lightning-button label="Save Changes" variant="brand" onclick={handleSaveStage} disabled={isSaveDisabled}></lightning-button>
-                </footer>
-            </div>
-        </section>
-        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
-    </template>
-    <!-- Edit Customer Details Modal -->
-    <template if:true={isEditModalOpen}>
-        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-04" class="slds-modal slds-fade-in-open slds-modal_small">
-            <div class="slds-modal__container">
-                <!-- Modal Header -->
-                <header class="slds-modal__header">
-                    <lightning-button-icon icon-name="utility:close" onclick={closeEditModal} alternative-text="Close" class="slds-modal__close" variant="bare-inverse"></lightning-button-icon>
-                    <h2 id="modal-heading-04" class="slds-modal__title slds-hyphenate">Edit Customer Details</h2>
-                </header>
-
-                <!-- Modal Body -->
-                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
-                    <lightning-record-edit-form
-                        record-id={customer.Id}
-                        object-api-name="Customer__c"
-                        onsuccess={handleEditSuccess}
-                    >
-                        <lightning-messages></lightning-messages>
-                        <div class="slds-grid slds-wrap">
-                            <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Name" required></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Company__c"></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Email__c"></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Phone__c"></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Industry__c"></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Customer_Type__c"></lightning-input-field>
-                            </div>
-                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_xx-small">
-                                <lightning-input-field field-name="Go_Live_Date__c" required></lightning-input-field>
-                            </div>
-                        </div>
-                        <div class="slds-m-top_medium slds-align_absolute-center">
-                            <lightning-button class="slds-m-right_small" label="Cancel" onclick={closeEditModal}></lightning-button>
-                            <lightning-button type="submit" variant="brand" label="Save Details" class="premium-btn"></lightning-button>
-                        </div>
-                    </lightning-record-edit-form>
-                </div>
-            </div>
-        </section>
-        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
     </template>
 </template>
