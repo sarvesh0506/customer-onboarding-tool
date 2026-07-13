@@ -18,7 +18,7 @@ public with sharing class TaskController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Onboarding_Task__c> listTasksForCustomer(Id customerId) {
         try {
             return TaskService.listTasksForCustomer(customerId);
@@ -27,7 +27,7 @@ public with sharing class TaskController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Onboarding_Task__c> listOverdueTasks() {
         try {
             return TaskService.listOverdueTasks();

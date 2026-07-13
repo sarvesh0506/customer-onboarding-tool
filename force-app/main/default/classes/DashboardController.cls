@@ -1,6 +1,6 @@
 public with sharing class DashboardController {
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Integer getTotalCustomers() {
         try {
             return DashboardService.getTotalCustomers();
@@ -9,7 +9,7 @@ public with sharing class DashboardController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Map<String, Integer> getCustomersByStage() {
         try {
             return DashboardService.getCustomersByStage();
@@ -18,7 +18,7 @@ public with sharing class DashboardController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Integer getOverdueTaskCount() {
         try {
             return DashboardService.getOverdueTaskCount();
@@ -27,7 +27,7 @@ public with sharing class DashboardController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Integer getReadyForGoLiveCount() {
         try {
             return DashboardService.getReadyForGoLiveCount();

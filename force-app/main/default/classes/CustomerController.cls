@@ -18,7 +18,7 @@ public with sharing class CustomerController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Customer__c getCustomer(Id customerId) {
         try {
             return CustomerService.getCustomer(customerId);
@@ -27,7 +27,7 @@ public with sharing class CustomerController {
         }
     }
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Customer__c> listCustomers(String searchTerm, String status) {
         try {
             Map<String, Object> filters = new Map<String, Object>();

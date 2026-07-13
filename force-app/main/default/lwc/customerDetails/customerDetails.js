@@ -4,7 +4,16 @@ import updateOnboardingStatus from '@salesforce/apex/CustomerController.updateOn
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CustomerDetails extends LightningElement {
-    @api customerId;
+    _customerId;
+
+    @api
+    get customerId() {
+        return this._customerId;
+    }
+    set customerId(value) {
+        this._customerId = value;
+        this.fetchCustomerDetails();
+    }
 
     @track customer;
     @track isModalOpen = false;
@@ -22,15 +31,7 @@ export default class CustomerDetails extends LightningElement {
         { label: 'Go-Live', value: 'Go-Live' }
     ];
 
-    watchCustomerId;
-
-    // Reacting to customerId change
-    renderedCallback() {
-        if (this.customerId !== this.watchCustomerId) {
-            this.watchCustomerId = this.customerId;
-            this.fetchCustomerDetails();
-        }
-    }
+    // watchCustomerId and renderedCallback removed for setter pattern
 
     @api
     refresh() {
@@ -38,13 +39,13 @@ export default class CustomerDetails extends LightningElement {
     }
 
     async fetchCustomerDetails() {
-        if (!this.customerId) {
+        if (!this._customerId) {
             this.customer = null;
             return;
         }
 
         try {
-            this.customer = await getCustomer({ customerId: this.customerId });
+            this.customer = await getCustomer({ customerId: this._customerId });
             this.newStage = this.customer.Onboarding_Status__c;
         } catch (error) {
             console.error('Error fetching customer details', error);

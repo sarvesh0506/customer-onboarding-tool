@@ -5,7 +5,16 @@ import updateTask from '@salesforce/apex/TaskController.updateTask';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class TaskManagement extends LightningElement {
-    @api customerId;
+    _customerId;
+
+    @api
+    get customerId() {
+        return this._customerId;
+    }
+    set customerId(value) {
+        this._customerId = value;
+        this.fetchTasks();
+    }
 
     @track tasks = [];
     @track isModalOpen = false;
@@ -22,14 +31,7 @@ export default class TaskManagement extends LightningElement {
         { label: 'Completed', value: 'Completed' }
     ];
 
-    watchCustomerId;
-
-    renderedCallback() {
-        if (this.customerId !== this.watchCustomerId) {
-            this.watchCustomerId = this.customerId;
-            this.fetchTasks();
-        }
-    }
+    // watchCustomerId and renderedCallback removed for setter pattern
 
     @api
     refresh() {
@@ -37,7 +39,7 @@ export default class TaskManagement extends LightningElement {
     }
 
     async fetchTasks() {
-        if (!this.customerId) {
+        if (!this._customerId) {
             this.tasks = [];
             return;
         }
