@@ -18,7 +18,8 @@ export default class CustomerList extends LightningElement {
         { label: 'Documentation Pending', value: 'Documentation Pending' },
         { label: 'Implementation', value: 'Implementation' },
         { label: 'UAT', value: 'UAT' },
-        { label: 'Go-Live', value: 'Go-Live' }
+        { label: 'Go Live', value: 'Go Live' },
+        { label: 'Completed', value: 'Completed' }
     ];
 
     connectedCallback() {
@@ -47,7 +48,8 @@ export default class CustomerList extends LightningElement {
                 else if (cust.Onboarding_Status__c === 'Documentation Pending') badgeClass += 'badge-amber';
                 else if (cust.Onboarding_Status__c === 'Implementation') badgeClass += 'badge-blue';
                 else if (cust.Onboarding_Status__c === 'UAT') badgeClass += 'badge-purple';
-                else if (cust.Onboarding_Status__c === 'Go-Live') badgeClass += 'badge-green';
+                else if (cust.Onboarding_Status__c === 'Go Live') badgeClass += 'badge-green';
+                else if (cust.Onboarding_Status__c === 'Completed') badgeClass += 'badge-green';
 
                 // Determine Selected Row Class
                 const isSelected = cust.Id === this.selectedCustomerId;

@@ -21,14 +21,15 @@ export default class CustomerDetails extends LightningElement {
     @track newStage = '';
     @track notes = '';
 
-    stagesOrder = ['New Customer', 'Documentation Pending', 'Implementation', 'UAT', 'Go-Live'];
+    stagesOrder = ['New Customer', 'Documentation Pending', 'Implementation', 'UAT', 'Go Live', 'Completed'];
 
     stageOptions = [
         { label: 'New Customer', value: 'New Customer' },
         { label: 'Documentation Pending', value: 'Documentation Pending' },
         { label: 'Implementation', value: 'Implementation' },
         { label: 'UAT', value: 'UAT' },
-        { label: 'Go-Live', value: 'Go-Live' }
+        { label: 'Go Live', value: 'Go Live' },
+        { label: 'Completed', value: 'Completed' }
     ];
 
     // watchCustomerId and renderedCallback removed for setter pattern

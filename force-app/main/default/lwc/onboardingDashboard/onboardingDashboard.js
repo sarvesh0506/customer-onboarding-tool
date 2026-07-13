@@ -11,7 +11,7 @@ export default class OnboardingDashboard extends LightningElement {
     @track stageData = [];
 
     // Predefined stages order
-    stagesOrder = ['New Customer', 'Documentation Pending', 'Implementation', 'UAT', 'Go-Live'];
+    stagesOrder = ['New Customer', 'Documentation Pending', 'Implementation', 'UAT', 'Go Live', 'Completed'];
 
     connectedCallback() {
         this.fetchMetrics();
@@ -47,7 +47,8 @@ export default class OnboardingDashboard extends LightningElement {
                 else if (stageName === 'Documentation Pending') barColor = '#f59e0b'; // Amber
                 else if (stageName === 'Implementation') barColor = '#3b82f6'; // Blue
                 else if (stageName === 'UAT') barColor = '#8b5cf6'; // Purple
-                else if (stageName === 'Go-Live') barColor = '#10b981'; // Green
+                else if (stageName === 'Go Live') barColor = '#06b6d4'; // Cyan
+                else if (stageName === 'Completed') barColor = '#10b981'; // Green
 
                 tempStageData.push({
                     name: stageName,
