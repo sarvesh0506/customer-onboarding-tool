@@ -91,7 +91,7 @@ public with sharing class CustomerService {
             throw new IllegalArgumentException('Customer ID and new status are required');
         }
         
-        if (newStatus == 'Completed') {
+        if (newStatus == 'Go Live' || newStatus == 'Completed') {
             Integer incompleteTasks = [
                 SELECT count() 
                 FROM Onboarding_Task__c 
@@ -100,7 +100,7 @@ public with sharing class CustomerService {
                 WITH SECURITY_ENFORCED
             ];
             if (incompleteTasks > 0) {
-                throw new IllegalArgumentException('Still tasks are yet to complete. You can update to Completed after completing all tasks.');
+                throw new IllegalArgumentException('Still tasks are yet to complete. You can update to ' + newStatus + ' after completing all tasks.');
             }
         }
         

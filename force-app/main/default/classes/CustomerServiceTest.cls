@@ -188,4 +188,56 @@ private class CustomerServiceTest {
             }
         }
     }
+
+    @IsTest
+    static void testUpdateOnboardingStatusGoLiveSuccess() {
+        User u = TestUtility.createTestUser();
+        System.runAs(u) {
+            Customer__c cust = new Customer__c(Name = 'Test Customer', Onboarding_Status__c = 'UAT');
+            insert cust;
+            
+            // Create a completed task
+            Onboarding_Task__c task = new Onboarding_Task__c(
+                Name = 'Completed Task',
+                Customer__c = cust.Id,
+                Status__c = 'Completed',
+                Due_Date__c = Date.today()
+            );
+            insert task;
+            
+            Test.startTest();
+            CustomerService.updateOnboardingStatus(cust.Id, 'Go Live', 'ready to go live');
+            Test.stopTest();
+            
+            Customer__c updated = [SELECT Onboarding_Status__c FROM Customer__c WHERE Id = :cust.Id];
+            Assert.areEqual('Go Live', updated.Onboarding_Status__c);
+        }
+    }
+    
+    @IsTest
+    static void testUpdateOnboardingStatusGoLiveFailure() {
+        User u = TestUtility.createTestUser();
+        System.runAs(u) {
+            Customer__c cust = new Customer__c(Name = 'Test Customer', Onboarding_Status__c = 'UAT');
+            insert cust;
+            
+            // Create an incomplete task
+            Onboarding_Task__c task = new Onboarding_Task__c(
+                Name = 'Pending Task',
+                Customer__c = cust.Id,
+                Status__c = 'Pending',
+                Due_Date__c = Date.today()
+            );
+            insert task;
+            
+            try {
+                Test.startTest();
+                CustomerService.updateOnboardingStatus(cust.Id, 'Go Live', 'ready to go live');
+                Test.stopTest();
+                Assert.fail('Should fail due to incomplete tasks');
+            } catch (IllegalArgumentException e) {
+                Assert.isTrue(e.getMessage().contains('Still tasks are yet to complete'), 'Expected tasks yet to complete validation message');
+            }
+        }
+    }
 }
